@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.15.1
+# v0.16.1
 
 using Markdown
 using InteractiveUtils
@@ -79,9 +79,9 @@ md"""
 # ╔═╡ 1be90f30-203b-11eb-34da-c3116523ec3a
 md"
 
-## Algorithms
+# Algorithms
 
-### Bipartitioning algorithm
+## Bipartitioning algorithm
 
 1. For given $A$ compute $A_{n}$.
 2. Compute singular vectors of $A_{n}$, $u^{[2]}$ and $v^{[2]}$, which correspond to the second largest singular value, $\sigma_2(A_n)$.
@@ -90,7 +90,7 @@ md"
 
 # ╔═╡ 5211ce2e-203b-11eb-0b6f-55e809177fb9
 md"
-### Recursive bipartitioning algorithm
+## Recursive bipartitioning algorithm
 
 1. Compute the bipartition $\pi=\{(T_1,D_1),(T_2,D_2)\}$ of $(T,D)$. Set the counter $c=2$.
 
@@ -105,7 +105,7 @@ md"
 
 # ╔═╡ 38333a20-203c-11eb-2b28-59e07b3e50ee
 md"
-### Multipartitioning algorithm
+## Multipartitioning algorithm
 1. For given $A$ compute $A_{n}$.
 2. Compute $k$ left and right singular vectors, $u^{[1]},\ldots,u^{[k]}$ and $v^{[1]},\ldots,v^{[k]}$, which correspond to $k$ largest singular values $\sigma_1\geq \cdots \geq \sigma_k$ of $A_n$.
 3. Partition the rows of matrices $\Delta_{1}^{-\frac{1}{2}}\begin{bmatrix} u^{[1]} & \ldots & u^{[k]}\end{bmatrix}$ and $\Delta_{2}^{-\frac{1}{2}}\begin{bmatrix} v^{[1]} & \ldots & v^{[k]}\end{bmatrix}$ with the k-means algorithm.
@@ -113,9 +113,9 @@ md"
 
 # ╔═╡ 1bc20329-3a6e-435d-a25c-8cce79fb7d9d
 md"
-## Examples
+# Examples
 
-### Small term-by- document matrix
+## Small term-by- document matrix
 "
 
 # ╔═╡ b9d0830a-0a33-40c1-a08a-49538cf7a879
@@ -198,7 +198,7 @@ V[:,2]
 
 # ╔═╡ 5f27f1a2-80de-41d1-b1e2-da3a99493217
 md"
-### Sets of points
+## Sets of points
 "
 
 # ╔═╡ 7cd3af86-f459-4e4b-8e35-c29bc6966eed
@@ -1222,7 +1222,7 @@ version = "0.9.1+5"
 # ╠═ac0b5eda-299c-4ae2-ae78-bda92b378f19
 # ╠═9bf6bbca-f96c-4b38-a4fd-5188ec29a2a2
 # ╠═aa51688c-21a0-40f4-a6d6-01d441bfd4b7
-# ╟─5f27f1a2-80de-41d1-b1e2-da3a99493217
+# ╠═5f27f1a2-80de-41d1-b1e2-da3a99493217
 # ╠═7cd3af86-f459-4e4b-8e35-c29bc6966eed
 # ╠═e1149b05-d594-4d75-ae56-1ce18bd0f60d
 # ╠═b95d4070-c127-4db0-987b-5fc17421b667

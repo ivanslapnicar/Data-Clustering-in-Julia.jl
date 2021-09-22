@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.15.1
+# v0.16.1
 
 using Markdown
 using InteractiveUtils
@@ -49,7 +49,7 @@ over all possible partitions. Here $c_{i}=\displaystyle\frac{1}{|C_{i}|}\sum_{x\
 
 # ╔═╡ 26640b90-1f69-11eb-029e-4dc3a825f639
 md"
-## K-means clustering algorithm
+# K-means clustering algorithm
 
 1. __Initialization__: Choose initial set of $k$ means $\{c_1,\ldots,c_k\}$ (for example, by choosing randomly $k$ points from $X$).
 2. __Assignment step__: Assign each point $x$ to one nearest mean $c_i$.
@@ -1168,7 +1168,7 @@ version = "0.9.1+5"
 # ╠═c7e41465-41ad-4f11-baec-bfaae9edbf59
 # ╟─00d72ad7-ea80-4954-8c75-590d4e9ccdc4
 # ╟─235e1901-eed3-4934-9214-ffdd82cf21d6
-# ╟─26640b90-1f69-11eb-029e-4dc3a825f639
+# ╠═26640b90-1f69-11eb-029e-4dc3a825f639
 # ╟─48914840-1f69-11eb-30a9-3943767bc261
 # ╟─2b76953c-edf2-41cf-9d75-7efb2d6a58f1
 # ╠═86d55833-ee5a-4f73-b0bf-e8b6e6d65617
