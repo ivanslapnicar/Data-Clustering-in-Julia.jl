@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.16.1
+# v0.16.0
 
 using Markdown
 using InteractiveUtils
@@ -39,7 +39,7 @@ __Credits.__ The notebook was initially derived from M.Sc. Thesis of Ivančica M
 # ╔═╡ 75cd6187-4c51-426c-8a3c-d7b6c922ae0b
 md"""
 
-## Definitions
+# Definitions
 
 Let $G=(V,E)$ be a weighted graph with weights $\omega$, with weights matrix $W$, Laplacian matrix $L=D-W$, and normalized Laplacian matrix $L_n=D^{-1/2}(D-W)D^{-1/2}$.
 
@@ -62,7 +62,7 @@ h_{k} &=[0,\cdots ,0,0,\cdots ,0,\cdots
 ,\overset{\displaystyle |V_{k}|}{ \overbrace{1,\cdots ,1}}]^{T}.
 \end{aligned}$$
 
-## Facts
+# Facts
 
 1. Set
 
@@ -121,9 +121,9 @@ $\min\limits_{\displaystyle \pi_k} \mathop{\mathrm{ncut}}(\pi_k)\geq \sum\limits
 # ╔═╡ 639758a5-413d-408a-ace9-3741322c3dc2
 md"""
 
-## Examples
+# Examples
 
-### Graph with three clusters
+## Graph with three clusters
 """
 
 # ╔═╡ d367f447-16e1-4cbc-b05f-b807d4ef955b
@@ -197,7 +197,7 @@ end
 
 # ╔═╡ 662b7b01-883f-4d51-b696-26f7559e0211
 md"""
-### Concentric rings
+## Concentric rings
 """
 
 # ╔═╡ 55d217d5-c31a-431d-bd46-f9f09280cf5b

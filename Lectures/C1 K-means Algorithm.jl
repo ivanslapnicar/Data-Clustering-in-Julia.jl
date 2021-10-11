@@ -1,15 +1,15 @@
 ### A Pluto.jl notebook ###
-# v0.16.1
+# v0.16.0
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ d0233ece-1f69-11eb-3da1-43b8ddc9fbe1
-begin
-	# Necessary packages
-	using PlutoUI, LinearAlgebra, Random, Statistics, Clustering, Plots
-	plotly()
-end
+# Necessary packages
+using PlutoUI, LinearAlgebra, Random, Statistics, Clustering, Plots
+
+# ╔═╡ b1bc5462-ac25-40b7-b49e-dd80f7f8e7c8
+plotly()
 
 # ╔═╡ c7e41465-41ad-4f11-baec-bfaae9edbf59
 TableOfContents(title="📚 Table of Contents", aside=true)
@@ -306,9 +306,6 @@ begin
 	out₁=kmeans(X₁,k₁,init=:rand)
 	plotKmeansresult(out₁,X₁)
 end
-
-# ╔═╡ 1637ce15-f55a-4d66-8a00-45a555bf5d61
-
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1165,6 +1162,7 @@ version = "0.9.1+5"
 
 # ╔═╡ Cell order:
 # ╠═d0233ece-1f69-11eb-3da1-43b8ddc9fbe1
+# ╠═b1bc5462-ac25-40b7-b49e-dd80f7f8e7c8
 # ╠═c7e41465-41ad-4f11-baec-bfaae9edbf59
 # ╟─00d72ad7-ea80-4954-8c75-590d4e9ccdc4
 # ╟─235e1901-eed3-4934-9214-ffdd82cf21d6
@@ -1189,6 +1187,5 @@ version = "0.9.1+5"
 # ╠═21bdc615-76e8-46cc-ac86-310d28f6cd25
 # ╠═9a4060b7-ba5a-401f-90f2-b9780ed93ddb
 # ╠═0be24dd5-f3b0-4daa-aad8-5dbcdfca9313
-# ╠═1637ce15-f55a-4d66-8a00-45a555bf5d61
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
