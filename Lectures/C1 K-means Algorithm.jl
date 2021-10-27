@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.16.0
+# v0.16.4
 
 using Markdown
 using InteractiveUtils
@@ -38,7 +38,7 @@ md"""
 
 __Data clustering problem__ is the following: partition the given set of $m$ objects of the same type into $k$ subsets according to some criterion. Additional request may be to find the optimal $k$.
 
-__K-means clustering problem__ is the following: partition the set  $X=\{x_{1},x_{2},\cdots ,x_{m}\}$ , where $x_{i}\in\mathbb{R}^{n}$, into $k$ _clusters_ $\pi=\{C_{1},C_{2},...,C_{k}\}$ such that
+__K-means clustering problem__ is the following: partition the set  $X=\{x_{1},x_{2},\cdots ,x_{m}\}$ , where $x_{i}\in\mathbb{R}^{n}$, into $k$ __clusters__ $\pi=\{C_{1},C_{2},...,C_{k}\}$ such that
 
 $$
 J(\pi)=\sum_{i=1}^{k}\sum_{x\in
@@ -1166,7 +1166,7 @@ version = "0.9.1+5"
 # ╠═c7e41465-41ad-4f11-baec-bfaae9edbf59
 # ╟─00d72ad7-ea80-4954-8c75-590d4e9ccdc4
 # ╟─235e1901-eed3-4934-9214-ffdd82cf21d6
-# ╠═26640b90-1f69-11eb-029e-4dc3a825f639
+# ╟─26640b90-1f69-11eb-029e-4dc3a825f639
 # ╟─48914840-1f69-11eb-30a9-3943767bc261
 # ╟─2b76953c-edf2-41cf-9d75-7efb2d6a58f1
 # ╠═86d55833-ee5a-4f73-b0bf-e8b6e6d65617
