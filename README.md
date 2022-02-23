@@ -1,10 +1,14 @@
 # Data Clustering in Julia
 
-Lecture notebooks for the short course/tutorial on data clustering.
-
-The tutorial is given at SoftCOM 2021, September 23-25, 2021.
+Lecture notebooks on data clustering.
 
 Notebooks are written in [Julia](https://julialang.org) using [Pluto.jl](https://github.com/fonsp/Pluto.jl).
+
+Notebooks have been used in:
+* Tutorial given at SoftCOM, September 2021.
+* SEA-EU Virtual Course at University of Malta, September 2021.
+
+
 
 ## Viewing the notebooks
 
