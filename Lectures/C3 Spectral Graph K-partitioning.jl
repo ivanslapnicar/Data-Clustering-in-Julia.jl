@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.2
+# v0.17.3
 
 using Markdown
 using InteractiveUtils
@@ -154,12 +154,11 @@ begin
 	    sparse([src;dst],[dst;src],[weights;weights],n,n)
 	end
 
-	Laplacian(W::AbstractMatrix)=spdiagm(0=>vec(sum(W,dims=2)))-W
+	Laplacian(W::AbstractMatrix)=Diagonal(vec(sum(W,dims=2)))-W
 
 	function NormalizedLaplacian(L::AbstractMatrix)
-	    D=1.0./sqrt.(diag(L))
-	    n=length(D)
-	    [L[i,j]*(D[i]*D[j]) for i=1:n, j=1:n]
+	    D=inv(√Diagonal(L))
+	    Symmetric(D*L*D)
 	end
 end
 
@@ -171,7 +170,7 @@ begin
 end
 
 # ╔═╡ 085b49b4-08a2-4e6e-8cbe-6a011a93b551
-Matrix(L)
+L
 
 # ╔═╡ 280049be-261e-49d7-a6fc-2211afe94e06
 # Proportional cut. The clustering is visible in
@@ -181,7 +180,7 @@ E=eigen(Matrix(L))
 
 # ╔═╡ 64730ce5-61b4-405d-9a41-81d0253a4713
 # Check the assignments
-out=kmeans(Matrix(transpose(E.vectors[:,1:3])),3)
+out=kmeans(transpose(E.vectors[:,1:3]),3)
 
 # ╔═╡ 692cbb97-2a5f-42c9-b829-e08d5e7479a8
 begin
@@ -189,10 +188,9 @@ begin
 	# Lanczos cannot be used for the "smallest in magnitude"
 	# eienvalues of a singular matrix
 	# λ,Y=eigs(Ln,nev=3,which=:SM) does not work
-	Eₙ=eigen(Lₙ)
-	D=sqrt.(diag(L))
-	Y=inv(Diagonal(D))*Eₙ.vectors[:,1:3]
-	outₙ=kmeans(Matrix(transpose(Y)),3)
+	Eₙ=eigen(Matrix(Lₙ))
+	Y=inv(√Diagonal(L))*Eₙ.vectors[:,1:3]
+	outₙ=kmeans(transpose(Y),3)
 end
 
 # ╔═╡ 662b7b01-883f-4d51-b696-26f7559e0211
@@ -253,7 +251,7 @@ end
 # ╔═╡ c298ccfe-f15e-4652-baa7-c122cb22f22f
 begin
 	L₁=Laplacian(W₁)
-	Ln₁=NormalizedLaplacian(L₁);
+	Ln₁=NormalizedLaplacian(L₁)
 end
 
 # ╔═╡ 9d8aef37-9640-4d67-9c33-bb6513938ae1
@@ -263,7 +261,7 @@ begin
 	sp=sortperm(abs.(E₁.values))[1:k]
 	λ₁=E₁.values[sp]
 	Y₁=E₁.vectors[:,sp]
-	out₁=kmeans(Matrix(transpose(Y₁)),k)
+	out₁=kmeans(transpose(Y₁),k)
 	plotKpartresult(out₁.assignments,X)
 end
 
@@ -274,8 +272,8 @@ begin
 	spn=sortperm(abs.(En₁.values))[1:k]
 	λ=En₁.values[spn]
 	Yn₁=En₁.vectors[:,spn]
-	Yn₁=Diagonal(1.0./sqrt.(diag(L₁)))*Y₁
-	outn₁=kmeans(Matrix(transpose(Y₁)),k)
+	Yn₁=inv(√Diagonal(L₁))*Y₁
+	outn₁=kmeans(transpose(Y₁),k)
 	plotKpartresult(outn₁.assignments,X)
 end
 

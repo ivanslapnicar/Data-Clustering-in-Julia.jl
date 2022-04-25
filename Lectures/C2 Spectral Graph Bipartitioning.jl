@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.2
+# v0.17.3
 
 using Markdown
 using InteractiveUtils
@@ -117,25 +117,19 @@ begin
 	    sparse([src;dst],[dst;src],[weights;weights],n,n)
 	end
 
-	Laplacian(W::AbstractMatrix)=spdiagm(0=>vec(sum(W,dims=2)))-W
+	Laplacian(W::AbstractMatrix)=Diagonal(vec(sum(W,dims=2)))-W
 
 	function NormalizedLaplacian(L::AbstractMatrix)
-	    D=1.0./sqrt.(diag(L))
-		Diagonal(D)*L*Diagonal(D)
+	    D=inv(√Diagonal(L))
+		Symmetric(D*L*D)
 	end
 end
 
 # ╔═╡ b7f127d8-e8cd-4771-8091-c88f9ffe6b08
 W=WeightMatrix(sn,tn,wn)
 
-# ╔═╡ 3f5447bb-95cd-4520-b0b9-e85f33b323bd
-Matrix(W)
-
 # ╔═╡ ecb2a46e-f9dc-4e57-812f-0a2788afb202
-begin
-	L=Laplacian(W)
-	Matrix(L)
-end
+L=Laplacian(W)
 
 # ╔═╡ 86e5f00f-13ee-4867-b0cd-187f2c782a46
 Lₙ=NormalizedLaplacian(L)
@@ -483,7 +477,7 @@ This is the same partitioning as obtained by `kmeans()`. Let us try Gaussian ker
 begin
 	σ=0.2 # 0.1
 	W₂=exp.(-pairwise(SqEuclidean(),X)/σ^2)-I
-	L₂=Diagonal(vec(sum(W₂,dims=2)))-W₂
+	L₂=Laplacian(W₂)
 	E₂=eigs(L₂,nev=2,which=:SM, v0=ones(m))
 	C₂=ones(Int64,m)
 	C₂[findall(E₂[2][:,2].>0)].=2
@@ -1462,7 +1456,6 @@ version = "0.9.1+5"
 # ╠═3b5ed1fa-75b0-43fb-a918-4c2e8f52d039
 # ╠═8f7d1f6c-ee4c-407f-80d9-d2abc2af949e
 # ╠═b7f127d8-e8cd-4771-8091-c88f9ffe6b08
-# ╠═3f5447bb-95cd-4520-b0b9-e85f33b323bd
 # ╠═ecb2a46e-f9dc-4e57-812f-0a2788afb202
 # ╠═86e5f00f-13ee-4867-b0cd-187f2c782a46
 # ╠═cf26dbe9-3c4f-4c95-88ef-f197f360d759
