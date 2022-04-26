@@ -222,11 +222,20 @@ seeding_algorithm(s::Symbol) =
 # ╔═╡ f9af8a75-48fd-4e82-b43e-61867bead6f9
 methods(kmeans)
 
+# ╔═╡ b205f443-5f54-4204-921b-49f1341edb4b
+X
+
 # ╔═╡ 7e869699-8eb1-4e38-905d-a9448d037841
 begin
 	Xₘ=transpose([[x[1] for x in X] [x[2] for x in X]])
 	output=kmeans(Matrix(Xₘ),k,init=:kmpp)
 end
+
+# ╔═╡ 2581fcba-1884-4c19-aafa-e2232d1c279d
+Xₘ
+
+# ╔═╡ 73a86c0d-d89e-4121-8e2c-d3b292f16939
+typeof(output)
 
 # ╔═╡ 4f8152ee-ce86-4df6-81d2-be2df33df980
 fieldnames(KmeansResult)
@@ -291,11 +300,11 @@ begin
 	# Random angles
 	ϕ=2*π*rand(sum(sizes₁))
 	for i=1:csizes₁[1]
-		X₁[:,i]=center+radii[1]*[cos(ϕ[i]);sin(ϕ[i])] + (rand(2).-0.5)/50
+		X₁[:,i]=center+radii[1]*[cos(ϕ[i]);sin(ϕ[i])] + (rand(2).-0.5)/10
 	end
 	for j=2:k₁
 		for i=csizes₁[j-1]+1:csizes₁[j]
-			X₁[:,i]=center+radii[j]*[cos(ϕ[i]);sin(ϕ[i])] + (rand(2).-0.5)/50
+			X₁[:,i]=center+radii[j]*[cos(ϕ[i]);sin(ϕ[i])] + (rand(2).-0.5)/10
 		end
 	end
 	scatter(X₁[1,:],X₁[2,:],title="Concentric Rings", aspect_ratio=1,label="Points")
@@ -1191,7 +1200,10 @@ version = "0.9.1+5"
 # ╠═8e5b89ce-e6b5-4473-bd98-a2285331418c
 # ╟─310a4957-cc58-424b-845c-3ebaf7db77f3
 # ╠═f9af8a75-48fd-4e82-b43e-61867bead6f9
+# ╠═2581fcba-1884-4c19-aafa-e2232d1c279d
+# ╠═b205f443-5f54-4204-921b-49f1341edb4b
 # ╠═7e869699-8eb1-4e38-905d-a9448d037841
+# ╠═73a86c0d-d89e-4121-8e2c-d3b292f16939
 # ╠═4f8152ee-ce86-4df6-81d2-be2df33df980
 # ╠═95fb2e66-e811-47f4-a772-8270d0c5d83b
 # ╠═26b7bac0-1f72-11eb-16fc-c1d74920c462
