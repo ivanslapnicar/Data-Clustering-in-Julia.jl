@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.3
+# v0.19.2
 
 using Markdown
 using InteractiveUtils
@@ -8,7 +8,7 @@ using InteractiveUtils
 begin
 	# Packages
 	using PlutoUI, LightGraphs, GraphPlot, Clustering, SparseArrays
-	using LinearAlgebra, Plots, Distances, Random
+	using LinearAlgebra, Plots, Distances, Random, Arpack
 end
 
 # ╔═╡ c9cf879e-0b01-4e0a-b31c-2ca5c6f03e63
@@ -169,6 +169,9 @@ begin
 	Lₙ=NormalizedLaplacian(L)
 end
 
+# ╔═╡ 88325537-84eb-46fc-8168-28c806889b28
+W
+
 # ╔═╡ 085b49b4-08a2-4e6e-8cbe-6a011a93b551
 L
 
@@ -177,6 +180,9 @@ L
 # the components of v₂ and v₃
 # E=eigs(L,nev=3,which=:SM)
 E=eigen(Matrix(L))
+
+# ╔═╡ c5444c4c-291d-47e2-ab27-ea8f40556bd0
+transpose(E.vectors[:,1:3])
 
 # ╔═╡ 64730ce5-61b4-405d-9a41-81d0253a4713
 # Check the assignments
@@ -189,9 +195,15 @@ begin
 	# eienvalues of a singular matrix
 	# λ,Y=eigs(Ln,nev=3,which=:SM) does not work
 	Eₙ=eigen(Matrix(Lₙ))
-	Y=inv(√Diagonal(L))*Eₙ.vectors[:,1:3]
+	Y=inv(√Diagonal(Lₙ))*Eₙ.vectors[:,1:3]
 	outₙ=kmeans(transpose(Y),3)
 end
+
+# ╔═╡ 9adefd1a-f9de-460f-b156-d9067220c340
+Y
+
+# ╔═╡ 0e20d8fe-69da-4541-a227-eb8719fdad9f
+plot3D(Y)
 
 # ╔═╡ 662b7b01-883f-4d51-b696-26f7559e0211
 md"""
@@ -245,7 +257,7 @@ begin
 	S=pairwise(SqEuclidean(),X,dims=2)
 	# S=pairwise(Cityblock(),X)
 	β=60
-	W₁=exp.(-β*S);
+	W₁=exp.(-β*S)
 end
 
 # ╔═╡ c298ccfe-f15e-4652-baa7-c122cb22f22f
@@ -280,6 +292,7 @@ end
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
+Arpack = "7d9fca2a-8960-54d3-9f78-7d1dccf2cb97"
 Clustering = "aaaa29a8-35af-508c-8bc3-b662a17a0fe5"
 Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 GraphPlot = "a2cc645c-3eea-5389-862e-a155d0052231"
@@ -291,6 +304,7 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
+Arpack = "~0.5.3"
 Clustering = "~0.14.2"
 Distances = "~0.10.4"
 GraphPlot = "~0.4.4"
@@ -317,6 +331,18 @@ deps = ["LinearAlgebra", "Random", "StaticArrays"]
 git-tree-sha1 = "f87e559f87a45bece9c9ed97458d3afe98b1ebb9"
 uuid = "ec485272-7323-5ecc-a04f-4719b315124d"
 version = "0.1.0"
+
+[[Arpack]]
+deps = ["Arpack_jll", "Libdl", "LinearAlgebra", "Logging"]
+git-tree-sha1 = "91ca22c4b8437da89b030f08d71db55a379ce958"
+uuid = "7d9fca2a-8960-54d3-9f78-7d1dccf2cb97"
+version = "0.5.3"
+
+[[Arpack_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl", "OpenBLAS_jll", "Pkg"]
+git-tree-sha1 = "5ba6c757e8feccf03a1554dfaf3e26b3cfc7fd5e"
+uuid = "68821587-b530-5797-8361-c406ea357684"
+version = "3.5.1+1"
 
 [[Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
@@ -1195,10 +1221,14 @@ version = "0.9.1+5"
 # ╠═d367f447-16e1-4cbc-b05f-b807d4ef955b
 # ╠═9438ace8-4290-4caa-bb34-24c1c8f4f66a
 # ╠═357b8af9-700a-4a2d-9703-575af5b9ab13
+# ╠═88325537-84eb-46fc-8168-28c806889b28
 # ╠═085b49b4-08a2-4e6e-8cbe-6a011a93b551
 # ╠═280049be-261e-49d7-a6fc-2211afe94e06
+# ╠═c5444c4c-291d-47e2-ab27-ea8f40556bd0
 # ╠═64730ce5-61b4-405d-9a41-81d0253a4713
 # ╠═692cbb97-2a5f-42c9-b829-e08d5e7479a8
+# ╠═9adefd1a-f9de-460f-b156-d9067220c340
+# ╠═0e20d8fe-69da-4541-a227-eb8719fdad9f
 # ╟─662b7b01-883f-4d51-b696-26f7559e0211
 # ╠═55d217d5-c31a-431d-bd46-f9f09280cf5b
 # ╠═3f815c3e-850d-4ca7-af1c-a2ff14e429db

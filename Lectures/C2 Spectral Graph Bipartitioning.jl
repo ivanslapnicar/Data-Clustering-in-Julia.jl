@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.3
+# v0.19.2
 
 using Markdown
 using InteractiveUtils
@@ -130,6 +130,9 @@ W=WeightMatrix(sn,tn,wn)
 
 # ╔═╡ ecb2a46e-f9dc-4e57-812f-0a2788afb202
 L=Laplacian(W)
+
+# ╔═╡ 6b9b0013-e707-4831-869a-0e20b1369484
+L*ones(n)
 
 # ╔═╡ 86e5f00f-13ee-4867-b0cd-187f2c782a46
 Lₙ=NormalizedLaplacian(L)
@@ -365,7 +368,13 @@ where $v_n^{[2]}$ is an eigenvector corresponding to $\lambda_2(L_n)$. $V_n$ is 
 
 # ╔═╡ c188b7cf-03e7-40b3-bf90-773978c7b410
 # Voila!
-eigs(L,nev=2,which=:SM, v0=ones(n))
+O=eigs(L,nev=2,which=:SM, v0=ones(n))
+
+# ╔═╡ 0969ecf3-00ee-4799-a885-a7f2c85d02cc
+O[2]
+
+# ╔═╡ ce57f74a-a0cc-4a92-9c74-7d0e6c8de3c6
+typeof(O)
 
 # ╔═╡ f60b51b6-79c3-4a3f-8bfb-8f198cdb92a8
 # For the normalized cut
@@ -398,7 +407,7 @@ begin
 	# Two concentric circles
 	k=2
 	# Center
-	Random.seed!(541)
+	Random.seed!(542)
 	# center=[rand(-5:5),rand(-5:5)]
 	center=[0,0]
 	# Radii
@@ -430,17 +439,11 @@ end
 # Weight matrix
 W₁=1 ./pairwise(SqEuclidean(),X)
 
-# ╔═╡ 760e8ca2-596f-435f-befb-140b3d204f7f
-begin
-	# Laplacian matrix
-	m=csizes[end]
-	for i=1:m
-	    W₁[i,i]=0
-	end
-	L₁=Diagonal(vec(sum(W₁,dims=2)))-W₁
-	# Check Fact 3
-	norm(L₁*ones(m))
-end
+# ╔═╡ bb68b540-f515-40c3-95ad-7f1f86f1852a
+L₁=Laplacian(W₁)
+
+# ╔═╡ f3c4556e-186c-4952-adc7-d84a1582b3c9
+m=size(L₁,1)
 
 # ╔═╡ 75956488-76ab-4262-a32f-0c53e1b3dc17
 # Notice λ₁=0
@@ -475,7 +478,7 @@ This is the same partitioning as obtained by `kmeans()`. Let us try Gaussian ker
 
 # ╔═╡ bb9d4d98-3aff-439e-b8a3-8347cf345839
 begin
-	σ=0.2 # 0.1
+	σ=1.1 # 0.1
 	W₂=exp.(-pairwise(SqEuclidean(),X)/σ^2)-I
 	L₂=Laplacian(W₂)
 	E₂=eigs(L₂,nev=2,which=:SM, v0=ones(m))
@@ -1457,6 +1460,7 @@ version = "0.9.1+5"
 # ╠═8f7d1f6c-ee4c-407f-80d9-d2abc2af949e
 # ╠═b7f127d8-e8cd-4771-8091-c88f9ffe6b08
 # ╠═ecb2a46e-f9dc-4e57-812f-0a2788afb202
+# ╠═6b9b0013-e707-4831-869a-0e20b1369484
 # ╠═86e5f00f-13ee-4867-b0cd-187f2c782a46
 # ╠═cf26dbe9-3c4f-4c95-88ef-f197f360d759
 # ╠═8fcd2440-4013-4b37-a747-2c0c7f6d4aeb
@@ -1475,12 +1479,15 @@ version = "0.9.1+5"
 # ╟─1e6d4c72-f25d-4bf5-99d6-ae0446be25dd
 # ╟─02035eed-6d49-4253-a755-68a999e7e90e
 # ╠═c188b7cf-03e7-40b3-bf90-773978c7b410
+# ╠═0969ecf3-00ee-4799-a885-a7f2c85d02cc
+# ╠═ce57f74a-a0cc-4a92-9c74-7d0e6c8de3c6
 # ╠═f60b51b6-79c3-4a3f-8bfb-8f198cdb92a8
 # ╟─bfac7a55-0d82-4549-b999-7db3272eaa20
 # ╠═80ed91ad-6f9a-4f12-a1ee-bc8dc6b58168
 # ╠═2d8689c9-1b9e-4360-865c-23c2c8c5dcb9
 # ╠═fa4ae713-a0b2-46ce-b5f7-558b26d82019
-# ╠═760e8ca2-596f-435f-befb-140b3d204f7f
+# ╠═bb68b540-f515-40c3-95ad-7f1f86f1852a
+# ╠═f3c4556e-186c-4952-adc7-d84a1582b3c9
 # ╠═75956488-76ab-4262-a32f-0c53e1b3dc17
 # ╠═a55260dd-f05d-4a65-9fdf-cb3fd4638857
 # ╠═ba164ff3-5ef4-4480-8af2-9dd9a99b1e8d

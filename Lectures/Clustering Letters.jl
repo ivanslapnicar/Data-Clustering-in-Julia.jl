@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.3
+# v0.19.2
 
 using Markdown
 using InteractiveUtils
@@ -142,16 +142,28 @@ issymmetric(Lₙ)
 begin
 	# Cluster normalized Laplacian
 	k=6
-	m=size(L,1)
+	m=size(Lₙ,1)
 	λ,Y=eigs(Lₙ,nev=k,which=:SM, v0=ones(m))
 	λ
 end
 
 # ╔═╡ 85589cdb-919b-4a0c-92b0-ef5d9a20a84a
-outₗ=kmeans(transpose(inv(√Diagonal(L))*Y),k)
+outₗ=kmeans(transpose(inv(√Diagonal(Lₙ))*Y),k)
 
 # ╔═╡ 51b6917c-fcf5-401e-b6fe-c02a43a19851
 plotKpartresult(outₗ.assignments,X)
+
+# ╔═╡ d62573ea-bc02-4081-9071-704343e3b38d
+μ,X1=eigs(L,nev=6,which=:SM,v0=ones(m))
+
+# ╔═╡ 4be108e9-3e0c-41d8-bcfa-1079352a8e9e
+out1=kmeans(transpose(X1),k)
+
+# ╔═╡ 10639ef6-3e15-4a30-83f9-574548b73bb6
+plotKpartresult(out1.assignments,X)
+
+# ╔═╡ 46b58856-854b-4145-a3d0-804c77c453e0
+eigs(L,nev=10,which=:LM,v0=ones(m))
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1568,5 +1580,9 @@ version = "0.9.1+5"
 # ╠═c61d9088-cfde-4653-a255-4d8bbc0fad75
 # ╠═85589cdb-919b-4a0c-92b0-ef5d9a20a84a
 # ╠═51b6917c-fcf5-401e-b6fe-c02a43a19851
+# ╠═d62573ea-bc02-4081-9071-704343e3b38d
+# ╠═4be108e9-3e0c-41d8-bcfa-1079352a8e9e
+# ╠═10639ef6-3e15-4a30-83f9-574548b73bb6
+# ╠═46b58856-854b-4145-a3d0-804c77c453e0
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
