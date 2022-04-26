@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.2
+# v0.17.3
 
 using Markdown
 using InteractiveUtils
@@ -181,6 +181,9 @@ L
 # E=eigs(L,nev=3,which=:SM)
 E=eigen(Matrix(L))
 
+# ╔═╡ 3144236b-95e3-42ea-88d5-64522b44417f
+scatter(E.vectors[:,2],E.vectors[:,3],label=false,title="Clusters of rows")
+
 # ╔═╡ c5444c4c-291d-47e2-ab27-ea8f40556bd0
 transpose(E.vectors[:,1:3])
 
@@ -199,11 +202,11 @@ begin
 	outₙ=kmeans(transpose(Y),3)
 end
 
+# ╔═╡ bf599fc7-2e00-4a82-ab6c-e55975c273b0
+scatter(Eₙ.vectors[:,2],Eₙ.vectors[:,3],label=false,title="Clusters of rows")
+
 # ╔═╡ 9adefd1a-f9de-460f-b156-d9067220c340
 Y
-
-# ╔═╡ 0e20d8fe-69da-4541-a227-eb8719fdad9f
-plot3D(Y)
 
 # ╔═╡ 662b7b01-883f-4d51-b696-26f7559e0211
 md"""
@@ -257,7 +260,9 @@ begin
 	S=pairwise(SqEuclidean(),X,dims=2)
 	# S=pairwise(Cityblock(),X)
 	β=60
-	W₁=exp.(-β*S)
+	W₁=exp.(-β*S)-I
+	# Zero the tiny elements
+	W₁[abs.(W₁) .< eps()] .= 0.0
 end
 
 # ╔═╡ c298ccfe-f15e-4652-baa7-c122cb22f22f
@@ -276,6 +281,9 @@ begin
 	out₁=kmeans(transpose(Y₁),k)
 	plotKpartresult(out₁.assignments,X)
 end
+
+# ╔═╡ 4b112c6a-122f-4ed4-a5ef-a32aef9fab69
+E₁
 
 # ╔═╡ 7c72773d-0915-4ef0-aa7e-7f0474426bfa
 begin
@@ -1224,18 +1232,20 @@ version = "0.9.1+5"
 # ╠═88325537-84eb-46fc-8168-28c806889b28
 # ╠═085b49b4-08a2-4e6e-8cbe-6a011a93b551
 # ╠═280049be-261e-49d7-a6fc-2211afe94e06
+# ╠═3144236b-95e3-42ea-88d5-64522b44417f
 # ╠═c5444c4c-291d-47e2-ab27-ea8f40556bd0
 # ╠═64730ce5-61b4-405d-9a41-81d0253a4713
 # ╠═692cbb97-2a5f-42c9-b829-e08d5e7479a8
+# ╠═bf599fc7-2e00-4a82-ab6c-e55975c273b0
 # ╠═9adefd1a-f9de-460f-b156-d9067220c340
-# ╠═0e20d8fe-69da-4541-a227-eb8719fdad9f
 # ╟─662b7b01-883f-4d51-b696-26f7559e0211
 # ╠═55d217d5-c31a-431d-bd46-f9f09280cf5b
 # ╠═3f815c3e-850d-4ca7-af1c-a2ff14e429db
 # ╠═967b8e40-1f95-11eb-0aa1-8f4592054357
 # ╠═708a16c5-f755-490b-abcb-89788813b7d0
 # ╠═c298ccfe-f15e-4652-baa7-c122cb22f22f
-# ╠═7c72773d-0915-4ef0-aa7e-7f0474426bfa
 # ╠═9d8aef37-9640-4d67-9c33-bb6513938ae1
+# ╠═4b112c6a-122f-4ed4-a5ef-a32aef9fab69
+# ╠═7c72773d-0915-4ef0-aa7e-7f0474426bfa
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

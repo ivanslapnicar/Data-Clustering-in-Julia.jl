@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.2
+# v0.17.3
 
 using Markdown
 using InteractiveUtils
@@ -124,6 +124,9 @@ begin
 		Symmetric(D*L*D)
 	end
 end
+
+# ╔═╡ 5a0243b8-aab8-4912-8c5b-279db422ac0c
+
 
 # ╔═╡ b7f127d8-e8cd-4771-8091-c88f9ffe6b08
 W=WeightMatrix(sn,tn,wn)
@@ -370,12 +373,6 @@ where $v_n^{[2]}$ is an eigenvector corresponding to $\lambda_2(L_n)$. $V_n$ is 
 # Voila!
 O=eigs(L,nev=2,which=:SM, v0=ones(n))
 
-# ╔═╡ 0969ecf3-00ee-4799-a885-a7f2c85d02cc
-O[2]
-
-# ╔═╡ ce57f74a-a0cc-4a92-9c74-7d0e6c8de3c6
-typeof(O)
-
 # ╔═╡ f60b51b6-79c3-4a3f-8bfb-8f198cdb92a8
 # For the normalized cut
 eigs(Lₙ,nev=2,which=:SM, v0=ones(n))
@@ -436,8 +433,12 @@ begin
 end
 
 # ╔═╡ fa4ae713-a0b2-46ce-b5f7-558b26d82019
-# Weight matrix
-W₁=1 ./pairwise(SqEuclidean(),X)
+begin
+	# Weight matrix
+	W₁=1 ./pairwise(SqEuclidean(),X)
+	W₁[diagind(W₁)].=0.0
+	W₁
+end
 
 # ╔═╡ bb68b540-f515-40c3-95ad-7f1f86f1852a
 L₁=Laplacian(W₁)
@@ -1458,6 +1459,7 @@ version = "0.9.1+5"
 # ╠═3d7b4a01-9a7d-4111-a45d-1d31f1ef6278
 # ╠═3b5ed1fa-75b0-43fb-a918-4c2e8f52d039
 # ╠═8f7d1f6c-ee4c-407f-80d9-d2abc2af949e
+# ╠═5a0243b8-aab8-4912-8c5b-279db422ac0c
 # ╠═b7f127d8-e8cd-4771-8091-c88f9ffe6b08
 # ╠═ecb2a46e-f9dc-4e57-812f-0a2788afb202
 # ╠═6b9b0013-e707-4831-869a-0e20b1369484
@@ -1479,8 +1481,6 @@ version = "0.9.1+5"
 # ╟─1e6d4c72-f25d-4bf5-99d6-ae0446be25dd
 # ╟─02035eed-6d49-4253-a755-68a999e7e90e
 # ╠═c188b7cf-03e7-40b3-bf90-773978c7b410
-# ╠═0969ecf3-00ee-4799-a885-a7f2c85d02cc
-# ╠═ce57f74a-a0cc-4a92-9c74-7d0e6c8de3c6
 # ╠═f60b51b6-79c3-4a3f-8bfb-8f198cdb92a8
 # ╟─bfac7a55-0d82-4549-b999-7db3272eaa20
 # ╠═80ed91ad-6f9a-4f12-a1ee-bc8dc6b58168
