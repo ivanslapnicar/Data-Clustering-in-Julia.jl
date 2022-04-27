@@ -6,10 +6,7 @@ using InteractiveUtils
 
 # ╔═╡ 7eb287c7-d65c-4552-901b-2c77ea509714
 # Packages
-using TextAnalysis, Languages, Arpack, Clustering, Plots
-
-# ╔═╡ dc81344e-7d8c-4ce2-91b0-535f8295d112
-plotly()
+using TextAnalysis, Languages, Arpack, Clustering, Plots, LinearAlgebra
 
 # ╔═╡ 2abb6d30-2079-11eb-2d32-47713a476605
 md"
@@ -56,14 +53,21 @@ begin
 	close(f)
 	frjoin=join(fr,"  ")
 	sdf=StringDocument(frjoin)
+	sdf0=sdf
 	language!(sdf,Languages.Croatian())
 	remove_corrupt_utf8!(sdf)
 	prepare!(sdf, strip_html_tags | strip_case | strip_numbers | strip_whitespace |  strip_punctuation | strip_stopwords)
 end
 
+# ╔═╡ be6872c0-c006-4895-a6d3-95224af87af4
+fr[200]
+
 # ╔═╡ 68174819-9f40-4627-ab86-5bda4f6cc652
 # Entire document as one line
 frjoin
+
+# ╔═╡ 147fa71e-5cff-4b78-a214-27e49a4d6e04
+typeof(sdf)
 
 # ╔═╡ 6c615a00-20de-11eb-0841-c30b5cf7d68a
 language(sdf)
@@ -122,6 +126,9 @@ M = DocumentTermMatrix(c)
 # ╔═╡ 6ed98bc2-2077-11eb-15fa-3f753c8ed3c7
 D=dtm(M)
 
+# ╔═╡ 89ca13c7-91d1-4f41-9d69-3d9e094d455c
+D[10,:]
+
 # ╔═╡ 78d31ab0-2077-11eb-0688-7d70444e8687
 T = tf_idf(D)
 
@@ -139,6 +146,10 @@ S,rest=svds(T,nsv=6)
 # ╔═╡ a70064ae-2077-11eb-2b51-3d76c0e7e933
 size(S.U)
 
+# ╔═╡ b011c21e-1c51-400b-b2cc-8895522d6c09
+# Rule of thumb for the number of clusters
+scatter(svdvals(Matrix(T)))
+
 # ╔═╡ b34b84be-2077-11eb-3a72-91c2fc5739dd
 outU=kmeans(Matrix(transpose(S.U)),6)
 
@@ -151,6 +162,7 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 Arpack = "7d9fca2a-8960-54d3-9f78-7d1dccf2cb97"
 Clustering = "aaaa29a8-35af-508c-8bc3-b662a17a0fe5"
 Languages = "8ef0a80b-9436-5d2c-a485-80b904378c43"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 TextAnalysis = "a2db99b7-8b79-58f8-94bf-bbc811eef33d"
 
@@ -1076,7 +1088,6 @@ version = "0.9.1+5"
 
 # ╔═╡ Cell order:
 # ╠═7eb287c7-d65c-4552-901b-2c77ea509714
-# ╠═dc81344e-7d8c-4ce2-91b0-535f8295d112
 # ╟─2abb6d30-2079-11eb-2d32-47713a476605
 # ╠═ac9a53ff-6c20-4ae5-82c9-ce633dd0233a
 # ╠═ecf03ccc-288c-4e0c-b376-5277ad53fd1a
@@ -1084,7 +1095,9 @@ version = "0.9.1+5"
 # ╠═30498550-2071-11eb-0f6b-33372a37909e
 # ╟─b59d17a0-2100-11eb-27de-c3196ecc1268
 # ╠═08057a10-20dd-11eb-300e-f52ff0eaf35f
+# ╠═be6872c0-c006-4895-a6d3-95224af87af4
 # ╠═68174819-9f40-4627-ab86-5bda4f6cc652
+# ╠═147fa71e-5cff-4b78-a214-27e49a4d6e04
 # ╠═6c615a00-20de-11eb-0841-c30b5cf7d68a
 # ╠═1c2c2b0e-20dd-11eb-39b6-a7a56b61391c
 # ╠═022dae30-2076-11eb-225e-233a63507457
@@ -1099,12 +1112,14 @@ version = "0.9.1+5"
 # ╠═4c8ce030-2077-11eb-0176-9de66dab00b3
 # ╠═53a7b932-2077-11eb-2bf4-1feca7dfa435
 # ╠═58f17bb0-2077-11eb-0939-3dff13742e14
-# ╠═588e73f4-4544-4683-92da-29fad5da9b45
 # ╠═6ed98bc2-2077-11eb-15fa-3f753c8ed3c7
+# ╠═89ca13c7-91d1-4f41-9d69-3d9e094d455c
 # ╠═78d31ab0-2077-11eb-0688-7d70444e8687
+# ╠═588e73f4-4544-4683-92da-29fad5da9b45
 # ╟─88b8c6a0-2077-11eb-3f48-2f453e82c0cb
 # ╠═8cb43730-2077-11eb-08ac-451458efac8d
 # ╠═a70064ae-2077-11eb-2b51-3d76c0e7e933
+# ╠═b011c21e-1c51-400b-b2cc-8895522d6c09
 # ╠═b34b84be-2077-11eb-3a72-91c2fc5739dd
 # ╠═3fb27600-2107-11eb-2a03-ed723e052828
 # ╟─00000000-0000-0000-0000-000000000001

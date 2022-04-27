@@ -154,12 +154,11 @@ begin
 	    sparse([src;dst],[dst;src],[weights;weights],n,n)
 	end
 
-	Laplacian(W::AbstractMatrix)=spdiagm(0=>vec(sum(W,dims=2)))-W
+	Laplacian(W::AbstractMatrix)=Diagonal(vec(sum(W,dims=2)))-W
 
 	function NormalizedLaplacian(L::AbstractMatrix)
-	    D=1.0./sqrt.(diag(L))
-	    n=length(D)
-	    [L[i,j]*(D[i]*D[j]) for i=1:n, j=1:n]
+		D=inv(√Diagonal(L))
+	    D*L*D
 	end
 end
 
@@ -170,10 +169,7 @@ W=WeightMatrix(tn,dn,wn)
 Matrix(W)
 
 # ╔═╡ 1f53b5cf-ab6a-4107-b53b-9ce96afcdb7f
-begin
-	L=Laplacian(W)
-	Matrix(L)
-end
+L=Laplacian(W)
 
 # ╔═╡ 63403411-cca4-4d71-8a76-8dea8638f69f
 Lₙ=NormalizedLaplacian(L)
@@ -181,14 +177,17 @@ Lₙ=NormalizedLaplacian(L)
 # ╔═╡ 3cf471bc-d316-4de9-af63-71db9b035c40
 begin
 	A=W[1:5,6:7]
-	Δ₁=sqrt.(sum(A,dims=2))
-	Δ₂=sqrt.(sum(A,dims=1))
-	Aₙ=[A[i,j]/(Δ₁[i]*Δ₂[j]) for i=1:size(A,1), j=1:size(A,2)]
+	Δ₁=inv(√Diagonal(vec(sum(A,dims=2))))
+	Δ₂=inv(√Diagonal(vec(sum(A,dims=1))))
+	Aₙ=Δ₁*A*Δ₂
 end
 
 # ╔═╡ ac0b5eda-299c-4ae2-ae78-bda92b378f19
 # The partitioning - explain the results!
-U,σ,V=svd(Aₙ)
+U,σ,V=svd(Matrix(Aₙ))
+
+# ╔═╡ 125f3721-6b05-4622-8c1e-7aaca93559f4
+V
 
 # ╔═╡ 9bf6bbca-f96c-4b38-a4fd-5188ec29a2a2
 U[:,2]
@@ -215,6 +214,9 @@ begin
 	end
 	B=blockdiag(Pts[1],Pts[2],Pts[3])
 end
+
+# ╔═╡ 69829043-be4e-476a-b7b2-000dded4ba53
+Pts[3]
 
 # ╔═╡ e1149b05-d594-4d75-ae56-1ce18bd0f60d
 spy(Matrix(B))
@@ -248,9 +250,21 @@ end
 # ╔═╡ 6888e8a9-f306-4490-9147-2460fbda4889
 begin
 	# Add random noise
-	noise=sprand(k,k,0.3)
+	noise=sprand(k,k,0.6)
 	C=B+noise
 	spy(Matrix(C))
+end
+
+# ╔═╡ 92498464-5c70-4363-9a18-6fda7d2607b5
+S₁,rest₁=svds(C,nsv=3);
+
+# ╔═╡ 9ffb6ea4-888d-47c9-b229-a80426c61038
+begin
+	# Plot the first three left singular vectors
+	x₁=collect(1:k)
+	scatter(x₁,S₁.U[:,1],title="Left Singular Vectors",label="U[:,1]")
+	scatter!(x₁,S₁.U[:,2],label="U[:,2]",legend=:topleft)
+	scatter!(x₁,S₁.U[:,3],label="U[:,3]")
 end
 
 # ╔═╡ 3bd5ad15-31cd-4efd-b4e3-7cf7ede3edae
@@ -267,16 +281,19 @@ __Question.__ Given D, can we recover C?
 __Answer.__ Yes (with spectral partitioning)!
 """
 
+# ╔═╡ a9fdfba3-c6ca-46a9-b409-c85e2bc5d83b
+nsv=3
+
 # ╔═╡ 81d99f24-82b9-4216-8d17-6a18317beb77
-Sₙ,rest=svds(D,nsv=3);
+Sₙ,rest=svds(D,nsv=nsv);
 
 # ╔═╡ 8f925ff7-90b4-4fe4-a869-86dec693c0f4
 # K-means on rows of U
-outU=kmeans(Matrix(transpose(Sₙ.U)),3)
+outU=kmeans(Matrix(transpose(Sₙ.U)),nsv)
 
 # ╔═╡ d446724a-97d1-403f-baaf-d0619203f351
 # K-means on Vt
-outV=kmeans(Sₙ.Vt,3)
+outV=kmeans(Sₙ.Vt,nsv)
 
 # ╔═╡ 7572c241-dbcc-4094-97e3-ee3172255294
 sortperm(outU.assignments)
@@ -287,6 +304,17 @@ begin
 	E=D[sortperm(outU.assignments),sortperm(outV.assignments)]
 	spy(Matrix(E))
 end
+
+# ╔═╡ bc133453-7d63-4a65-aa21-5b6982d988c9
+# Or we can just try the second singular vectors
+begin
+	F=D[sortperm(Sₙ.U[:,2]),sortperm(Sₙ.V[:,2])]
+	spy(Matrix(F))
+end
+
+# ╔═╡ f156cd35-a506-44e4-aa81-f2011c9bb7e0
+# Rule of thumb for number of clusters
+scatter(svdvals(Matrix(D)))
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1230,22 +1258,29 @@ version = "0.9.1+5"
 # ╠═63403411-cca4-4d71-8a76-8dea8638f69f
 # ╠═3cf471bc-d316-4de9-af63-71db9b035c40
 # ╠═ac0b5eda-299c-4ae2-ae78-bda92b378f19
+# ╠═125f3721-6b05-4622-8c1e-7aaca93559f4
 # ╠═9bf6bbca-f96c-4b38-a4fd-5188ec29a2a2
 # ╠═aa51688c-21a0-40f4-a6d6-01d441bfd4b7
-# ╠═5f27f1a2-80de-41d1-b1e2-da3a99493217
+# ╟─5f27f1a2-80de-41d1-b1e2-da3a99493217
 # ╠═7cd3af86-f459-4e4b-8e35-c29bc6966eed
+# ╠═69829043-be4e-476a-b7b2-000dded4ba53
 # ╠═e1149b05-d594-4d75-ae56-1ce18bd0f60d
 # ╠═b95d4070-c127-4db0-987b-5fc17421b667
 # ╠═57d472c1-548d-4678-b884-85f863771aa7
 # ╠═4806378b-63cb-445a-8c71-583458fce846
 # ╠═a08c99a3-9c10-47be-9dc6-987d92a85087
 # ╠═6888e8a9-f306-4490-9147-2460fbda4889
+# ╠═92498464-5c70-4363-9a18-6fda7d2607b5
+# ╠═9ffb6ea4-888d-47c9-b229-a80426c61038
 # ╠═3bd5ad15-31cd-4efd-b4e3-7cf7ede3edae
 # ╟─e4487f35-5de0-492e-96f1-69318d7d8e8b
+# ╠═a9fdfba3-c6ca-46a9-b409-c85e2bc5d83b
 # ╠═81d99f24-82b9-4216-8d17-6a18317beb77
 # ╠═8f925ff7-90b4-4fe4-a869-86dec693c0f4
 # ╠═d446724a-97d1-403f-baaf-d0619203f351
 # ╠═7572c241-dbcc-4094-97e3-ee3172255294
 # ╠═22e90c11-ba4e-4073-9f78-f3b7beb24e69
+# ╠═bc133453-7d63-4a65-aa21-5b6982d988c9
+# ╠═f156cd35-a506-44e4-aa81-f2011c9bb7e0
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
