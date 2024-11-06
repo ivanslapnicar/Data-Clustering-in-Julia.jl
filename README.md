@@ -7,6 +7,7 @@ Notebooks are written in [Julia](https://julialang.org) using [Pluto.jl](https:/
 Notebooks have been used in:
 * Tutorial given at SoftCOM, September 2021.
 * SEA-EU Virtual Course at University of Malta, September 2021.
+* [EuroCC On-line workshop:  AI Techniques - Data Clustering in Julia](https://hpc-portal.eu/node/1341), April 2022.
 
 
 
